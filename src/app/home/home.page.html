@@ -1,20 +1,95 @@
 <ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
+  <ion-toolbar class="list-toolbar">
+    
+    <!-- <ion-item lines="none">
+      <ion-title>
+        Blank
+      </ion-title>
+    </ion-item> -->
+    
+    <ion-item lines="none">
+      <ion-label>
+        <ion-text class="header-slogan">Manage your tasks</ion-text>
+      </ion-label>
+    </ion-item>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <ion-fab slot="fixed" horizontal="end" vertical="top" [edge]="true">
+    <ion-fab-button  id="open-modal">
+      <ion-icon  name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+
+<!-- List -->
+
+<ion-list >
+  <ion-list-header>
+    <ion-label>Todo Tasks</ion-label>
+  </ion-list-header>
+  <ion-item-sliding *ngFor="let task of tasks">
+    <ion-item class="todo" [ngClass]="{'todoDone':task.done}" lines="none" (click)="completeTask(task)" >
+      <ion-checkbox   [checked]="task.done">  
+       <div>
+        <ion-label>{{task.title|titlecase}}</ion-label>
+        <ion-text>{{task.description|titlecase}}</ion-text>
+       </div>
+      </ion-checkbox>
+    
+    </ion-item>
+   
+    <ion-item-options side="end">
+      <ion-item-option color="danger" (click)="deleteTask(task)">
+        Delete
+        <ion-icon name="trash-outline" size="medium"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+
+  </ion-item-sliding>
+</ion-list>
+
+  <!-- Modal -->
+  <ion-modal trigger="open-modal" (willDismiss)="onWillDismiss($event)">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="cancel()">Cancel</ion-button>
+          </ion-buttons>
+          <ion-title>Welcome</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="confirm()" [strong]="true">Add</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-input
+            label="Enter your task"
+            labelPlacement="stacked"
+            type="text"
+            placeholder="Your task"
+            [class.ng-invalid]="!title "
+            errorText="Task title is required"
+           name="title"
+          
+           [(ngModel)]="title"
+          ></ion-input>
+         
+        </ion-item>
+        <ion-item>
+          <ion-input
+            label="Enter task description"
+            labelPlacement="stacked"
+            type="text"
+            placeholder="task description"
+            name="description"
+            [(ngModel)]="description"
+          ></ion-input>
+        </ion-item>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
