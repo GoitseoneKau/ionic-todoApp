@@ -11,6 +11,7 @@ export type Task = {
   providedIn: 'root'
 })
 export class TaskDataService {
+  // tasks
   tasks: Task[] = [
     {
       id:1,
@@ -34,10 +35,13 @@ export class TaskDataService {
   
   constructor() { }
 
+  // get tasks
   getTasks(){
     return this.tasks
   }
 
+
+  // add task
   addTask(task:any){
     console.log(task)
     task.description = task.description? task.description : "no description";
@@ -45,11 +49,13 @@ export class TaskDataService {
     this.tasks.push(task);
   }
   
+  // remove task
   removeTask(task:any){
     this.tasks = this.tasks.filter((t) => t.id !== task.id);
     return this.tasks;
   }
 
+  // update task
   updateTask(task:any){
     return this.tasks.map((t) => t.id === task.id? {...t,...task}: t);
   }

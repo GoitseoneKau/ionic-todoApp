@@ -46,13 +46,14 @@ import { TaskDataService } from '../services/task-data.service';
   ],
 })
 export class HomePage {
-
+// get modal
   @ViewChild(IonModal) modal!: IonModal;
 
+  // get tasks
   tasks:Task[] = [];
   title=""
   description=""
-   
+   // inject task service
   constructor(private taskService:TaskDataService) {
     addIcons({add,trashOutline});
     this.tasks = this.taskService.getTasks();
@@ -60,7 +61,7 @@ export class HomePage {
 
 
   onWillDismiss(event: IonModalCustomEvent<OverlayEventDetail<any>>) {
-  
+  // add task if confirm button is clicked
     if (event.detail.role === 'confirm') {
       this.title=""
       this.description=""
@@ -68,22 +69,27 @@ export class HomePage {
     }
   }
 
+  //close modal
   cancel() {
     this.modal.dismiss();
   }
 
+  // confirm task in modal
   confirm() {
 
+    // dont add task if title is empty
     if(!this.title) {
       return;
     }
     this.modal.dismiss({title:this.title,description:this.description},'confirm');
   }
 
+  // delete task
   deleteTask(task: Task) {
    this.tasks =  this.taskService.removeTask(task);
   }
 
+  // complete task
   completeTask(task: Task) {
     task.done = !task.done;
     this.tasks = this.taskService.updateTask(task);
